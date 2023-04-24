@@ -9,9 +9,9 @@
 {% for movie in movies %}
     <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100 card border-success text-white bg-dark">
-            <img class="card-img-top" src="http://placehold.it/300x500" alt="">
+            <img class="card-img-top" src="https://image.tmdb.org/t/p/w780/{{movie.poster_path}}" alt="">
             <div class="card-body border-success">
-                <h4 class="card-title">Tytuł filmu</h4>
+                <h4 class="card-title">{{ movie.title }}</h4>
             </div>
             <div class="card-footer bg-transparent text-center">
                 <a href="#" class="btn btn-success">Pokaż więcej</a>
