@@ -10,6 +10,14 @@ def homepage():
     movies = tmdb_client.get_movies(how_many=8)
     return render_template("homepage.html", movies=movies)
 
+
+#pobranie obazka
+@app.context_processor
+def utility_processor():
+    def tmdb_image_url(path, size):
+        return tmdb_client.get_poster_url(path, size)
+    return {"tmdb_image_url": tmdb_image_url}
+
  # utworzenie słownika z danymi tytuł:kod obrazka   
 def get_movie_info():
     results_movies=tmdb_client.get_popular_movies()
