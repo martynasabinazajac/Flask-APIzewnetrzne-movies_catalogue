@@ -6,15 +6,21 @@
         <h1 class="mt-5">Witaj w mojej bibliotece filmów</h1>
         <p class="lead">Znajdziesz tutaj tylko najlepsze tytuły!</p>
     </div>
+    <div class="col-lg-12 mb-4">
+        <a href="{{ url_for('homepage', list_type='now_playing') }}" class="btn btn-outline-info">Now Playing</a>
+        <a href="{{ url_for('homepage', list_type='popular') }}" class="btn btn-outline-info">Popular</a>
+        <a href="{{ url_for('homepage', list_type='top_rated') }}" class="btn btn-outline-info">Top Rated</a>
+        <a href="{{ url_for('homepage', list_type='upcoming') }}" class="btn btn-outline-info">Upcoming</a>
+    </div>
 {% for movie in movies %}
     <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100 card border-success text-white bg-dark">
-            <img class="card-img-top" src="https://image.tmdb.org/t/p/w780/{{movie.poster_path}}" alt="">
+            <img class="card-img-top" src="{{ tmdb_image_url(movie.poster_path, 'w342') }}" alt="">
             <div class="card-body border-success">
                 <h4 class="card-title">{{ movie.title }}</h4>
             </div>
             <div class="card-footer bg-transparent text-center">
-                <a href="#" class="btn btn-success">Pokaż więcej</a>
+                <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-success">Pokaż więcej</a>
             </div>
         </div>
     </div>

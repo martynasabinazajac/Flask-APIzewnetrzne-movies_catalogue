@@ -1,30 +1,49 @@
-from flask import Flask
 import json
 import requests
 
-app=Flask(__name__)
+API_TOKEN= "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTdmODg0ZTg4OGNiNGE0ZDk4ZjAzMDg0ODU4ZDA4NCIsInN1YiI6IjY0NDJjODVjZTJiY2E4MDJmYzQzNzkyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.whb7JAM61hn-mAxwffEGxuyu28aESjSKZ9AaxUilAWI"
 
-def get_popular_movies():
-    api_data = "https://api.themoviedb.org/3/movie/popular"
-    api_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTdmODg0ZTg4OGNiNGE0ZDk4ZjAzMDg0ODU4ZDA4NCIsInN1YiI6IjY0NDJjODVjZTJiY2E4MDJmYzQzNzkyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.whb7JAM61hn-mAxwffEGxuyu28aESjSKZ9AaxUilAWI"
+
+def get_movies_list(list_type):
+    endpoint = f"https://api.themoviedb.org/3/movie/{list_type}"
     headers = {
-        "Authorization": f"Bearer {api_token}"
+        "Authorization": f"Bearer {API_TOKEN}"
     }
-    response = requests.get(api_data, headers=headers)
-    results_movies=response.json()
-    return results_movies
+    response = requests.get(endpoint, headers=headers)
+    response.raise_for_status()
+    return response.json()
+
 
 def get_poster_url(poster_api_path, size="w342"):
     base_url="https://image.tmdb.org/t/p/"
     return f'{base_url}{size}/{poster_api_path}'
-
-
+    
 #funkcja odpowiedzialna z ilość wyswietlanych tytulów
-def get_movies(how_many):
-    data = get_popular_movies()
+def get_movies(how_many, list_type):
+    data = get_movies_list(list_type)
     return data["results"][:how_many]
 
-if __name__=="__main__":
-     app.run(debug=True)
+#funkcja pobierająca z API szczegóły filmów:
+def get_single_movie(movie_id):
+    endpoint = f"https://api.themoviedb.org/3/movie/{movie_id}"
+    headers = {
+        "Authorization": f"Bearer {API_TOKEN}"
+    }
+    response = requests.get(endpoint, headers=headers)
+    return response.json()
 
-  
+  #funkcja zwraca obsade dla danego filmu
+def get_single_movie_cast(movie_id):
+    endpoint = f"https://api.themoviedb.org/3/movie/{movie_id}/credits"
+    headers = {
+        "Authorization": f"Bearer {API_TOKEN}"
+    }
+    response = requests.get(endpoint, headers=headers)
+    return response.json()['cast']
+
+# utworzenie słownika z danymi tytuł:kod obrazka
+def get_movie_info(list_type):
+    results_movies=get_movies_list(list_type)
+    results_movies2=results_movies["results"]
+    results_movies_dict={ x["title"]:x["poster_path"] for x in results_movies2}
+    return results_movies_dict
