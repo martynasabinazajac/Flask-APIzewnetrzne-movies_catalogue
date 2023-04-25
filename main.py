@@ -14,9 +14,12 @@ def utility_processor():
 #zachowanie aplikacji po wejściu na stronę główną
 @app.route('/')
 def homepage():
+    movies_list = ["top_rated", "popular", "now_playing", "upcoming"]
     selected_list = request.args.get('list_type', 'popular')
+    if selected_list not in movies_list:
+        selected_list='popular'
     movies = tmdb_client.get_movies(how_many=8, list_type=selected_list)
-    return render_template("homepage.html", movies=movies, current_list=selected_list)
+    return render_template("homepage.html", movies=movies, current_list=selected_list, lists=movies_list, activ=selected_list)
 
 #odpytanie o szczegóły filmów
 @app.route('/movie/<movie_id>')

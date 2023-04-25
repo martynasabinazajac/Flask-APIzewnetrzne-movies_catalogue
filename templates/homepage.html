@@ -6,11 +6,15 @@
         <h1 class="mt-5">Witaj w mojej bibliotece filmów</h1>
         <p class="lead">Znajdziesz tutaj tylko najlepsze tytuły!</p>
     </div>
+
     <div class="col-lg-12 mb-4">
-        <a href="{{ url_for('homepage', list_type='now_playing') }}" class="btn btn-outline-info">Now Playing</a>
-        <a href="{{ url_for('homepage', list_type='popular') }}" class="btn btn-outline-info">Popular</a>
-        <a href="{{ url_for('homepage', list_type='top_rated') }}" class="btn btn-outline-info">Top Rated</a>
-        <a href="{{ url_for('homepage', list_type='upcoming') }}" class="btn btn-outline-info">Upcoming</a>
+{% for option in lists %}
+    {% if activ == option %}
+        <a href="{{ url_for('homepage', list_type=option) }}" class="btn btn-outline-info active border-success text-white bg-success" aria-pressed="true">{{ option.capitalize()|replace("_", " ") }}</a>
+    {% else %}
+        <a href="{{ url_for('homepage', list_type=option) }}" class="btn btn-outline-info border-success text-white bg-dark">{{ option.capitalize()|replace("_", " ") }}</a>
+    {% endif %}
+{% endfor %}
     </div>
 {% for movie in movies %}
     <div class="col-lg-3 col-md-6 mb-4">
