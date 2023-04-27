@@ -1,49 +1,50 @@
 import json
 import requests
 
-API_TOKEN= "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTdmODg0ZTg4OGNiNGE0ZDk4ZjAzMDg0ODU4ZDA4NCIsInN1YiI6IjY0NDJjODVjZTJiY2E4MDJmYzQzNzkyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.whb7JAM61hn-mAxwffEGxuyu28aESjSKZ9AaxUilAWI"
+API_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTdmODg0ZTg4OGNiNGE0ZDk4ZjAzMDg0ODU4ZDA4NCIsInN1YiI6IjY0NDJjODVjZTJiY2E4MDJmYzQzNzkyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.whb7JAM61hn-mAxwffEGxuyu28aESjSKZ9AaxUilAWI"
 
 
-def get_movies_list(list_type):
-    endpoint = f"https://api.themoviedb.org/3/movie/{list_type}"
-    headers = {
-        "Authorization": f"Bearer {API_TOKEN}"
-    }
+def header_endpoint(endpoint):
+    headers = {"Authorization": f"Bearer {API_TOKEN}"}
     response = requests.get(endpoint, headers=headers)
     response.raise_for_status()
     return response.json()
 
 
+def get_movies_list(list_type):
+    endpoint = f"https://api.themoviedb.org/3/movie/{list_type}"
+    result = header_endpoint(endpoint)
+    return result
+
+
 def get_poster_url(poster_api_path, size="w342"):
-    base_url="https://image.tmdb.org/t/p/"
-    return f'{base_url}{size}/{poster_api_path}'
-    
-#funkcja odpowiedzialna z ilość wyswietlanych tytulów
+    base_url = "https://image.tmdb.org/t/p/"
+    return f"{base_url}{size}/{poster_api_path}"
+
+
+# funkcja odpowiedzialna z ilość wyswietlanych tytulów
 def get_movies(how_many, list_type):
     data = get_movies_list(list_type)
     return data["results"][:how_many]
 
-#funkcja pobierająca z API szczegóły filmów:
+
+# funkcja pobierająca z API szczegóły filmów:
 def get_single_movie(movie_id):
     endpoint = f"https://api.themoviedb.org/3/movie/{movie_id}"
-    headers = {
-        "Authorization": f"Bearer {API_TOKEN}"
-    }
-    response = requests.get(endpoint, headers=headers)
-    return response.json()
+    result = header_endpoint(endpoint)
+    return result
 
-  #funkcja zwraca obsade dla danego filmu
+
+# funkcja zwraca obsade dla danego filmu
 def get_single_movie_cast(movie_id):
     endpoint = f"https://api.themoviedb.org/3/movie/{movie_id}/credits"
-    headers = {
-        "Authorization": f"Bearer {API_TOKEN}"
-    }
-    response = requests.get(endpoint, headers=headers)
-    return response.json()['cast']
+    result = header_endpoint(endpoint)
+    return result["cast"]
 
-# utworzenie słownika z danymi tytuł:kod obrazka
-def get_movie_info(list_type):
-    results_movies=get_movies_list(list_type)
-    results_movies2=results_movies["results"]
-    results_movies_dict={ x["title"]:x["poster_path"] for x in results_movies2}
-    return results_movies_dict
+
+# utworzenie słownika z danymi tytuł:kod obrazka- odpowiedź w komentarzu zakomentuje tu tą funkcję
+# def get_movie_info(list_type):
+#     results_movies=get_movies_list(list_type)
+#     results_movies2=results_movies["results"]
+#     results_movies_dict={ x["title"]:x["poster_path"] for x in results_movies2}
+#     return results_movies_dict

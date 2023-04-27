@@ -8,15 +8,19 @@
     </div>
 
     <div class="col-lg-12 mb-4">
-{% for option in lists %}
-    {% if activ == option %}
-        <a href="{{ url_for('homepage', list_type=option) }}" class="btn btn-outline-info active border-success text-white bg-success" aria-pressed="true">{{ option.capitalize()|replace("_", " ") }}</a>
-    {% else %}
-        <a href="{{ url_for('homepage', list_type=option) }}" class="btn btn-outline-info border-success text-white bg-dark">{{ option.capitalize()|replace("_", " ") }}</a>
-    {% endif %}
-{% endfor %}
+        {% for option in lists %}
+        {% if list_type == option %}
+        <a href="{{ url_for('homepage', list_type=option) }}"
+            class="btn btn-outline-info active border-success text-white bg-success" aria-pressed="true">{{
+            option.capitalize()|replace("_", " ") }}</a>
+        {% else %}
+        <a href="{{ url_for('homepage', list_type=option) }}"
+            class="btn btn-outline-info border-success text-white bg-dark">{{ option.capitalize()|replace("_", " ")
+            }}</a>
+        {% endif %}
+        {% endfor %}
     </div>
-{% for movie in movies %}
+    {% for movie in movies %}
     <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100 card border-success text-white bg-dark">
             <img class="card-img-top" src="{{ tmdb_image_url(movie.poster_path, 'w342') }}" alt="">
@@ -28,7 +32,7 @@
             </div>
         </div>
     </div>
-{% endfor %}
+    {% endfor %}
 </div>
 {% endblock %}
 <!-- Bootstrap core JS-->
