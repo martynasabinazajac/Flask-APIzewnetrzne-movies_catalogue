@@ -1,8 +1,8 @@
 import json
 import requests
+import os
 
-API_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTdmODg0ZTg4OGNiNGE0ZDk4ZjAzMDg0ODU4ZDA4NCIsInN1YiI6IjY0NDJjODVjZTJiY2E4MDJmYzQzNzkyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.whb7JAM61hn-mAxwffEGxuyu28aESjSKZ9AaxUilAWI"
-
+API_TOKEN = os.environ.get("TMDB_API_TOKEN", "")
 
 def header_endpoint(endpoint):
     headers = {"Authorization": f"Bearer {API_TOKEN}"}
